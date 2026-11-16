@@ -1,0 +1,20 @@
+// 티스토리 기존 글 본문 교체 (2026-11-16). 인자 N(글 번호). /manage/newpost/N?type=post 에서 실행. 예약/발행 날짜는 건드리지 않음
+const sl=ms=>new Promise(r=>setTimeout(r,ms));
+for(let k=0;k<60&&!(window.tinymce&&tinymce.activeEditor&&tinymce.activeEditor.initialized);k++) await sl(250);
+await sl(1500);
+const J = await (await fetch('https://raw.githubusercontent.com/jhsy3221-svg/IMAGESTORE/d6eb7c3a2d719b914ebc134c0cd9e05f6b3edbbf/_posts/tistory_links.json')).json();
+const p = J.find(x=>x.n===N); if(!p) return 'NODATA '+N;
+const t = document.querySelector('#post-title-inp');
+if (t.value.trim() !== p.title) return 'TITLE MISMATCH '+N+' '+t.value;
+const ed=tinymce.activeEditor; const before=ed.getContent().length;
+ed.setContent(p.html); ed.undoManager.add(); ed.setDirty(true); ed.fire('change'); await sl(500);
+const clen=ed.getContent().length; const links=(ed.getContent().match(/link\.coupang\.com\/a\//g)||[]).length;
+if (clen < 1000 || !links) return 'BADBODY '+N+' '+clen;
+[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='완료').click(); await sl(1200);
+const mode=[...document.querySelectorAll('button.btn_date')].find(b=>b.classList.contains('on'))?.textContent.trim();
+const rdate=document.querySelector('button.btn_reserve')?.textContent.trim();
+const st={before, clen, links, pub:document.querySelector('#open20')?.checked, mode, rdate, hh:document.querySelector('#dateHour')?.value};
+const btn=[...document.querySelectorAll('button')].find(x=>x.offsetParent && x.textContent.trim()==='공개 발행');
+const ok = st.pub && btn && (mode==='예약' ? st.hh==='14' : true);
+if (ok) setTimeout(()=>btn.click(), 50);
+return JSON.stringify([N, st, ok ? 'SAVED' : 'STOPPED']);
