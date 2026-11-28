@@ -3,7 +3,7 @@ const sl=ms=>new Promise(r=>setTimeout(r,ms)); const setv=(el,v)=>{Object.getOwn
 const Y=2027, MO=2;
 for(let k=0;k<60&&!(window.tinymce&&tinymce.activeEditor&&tinymce.activeEditor.initialized);k++) await sl(250);
 await sl(1500);
-const J = window.__TJ2 || (window.__TJ2 = await (await fetch('https://raw.githubusercontent.com/jhsy3221-svg/IMAGESTORE/__COMMIT__/_posts/tistory_feb.json')).json()); const p=J[K];
+const J = window.__TJ2 || (window.__TJ2 = await (await fetch('https://raw.githubusercontent.com/jhsy3221-svg/IMAGESTORE/2d8694991d1e61d3d1c976c01d872422da35168e/_posts/tistory_feb.json')).json()); const p=J[K];
 const ed=tinymce.activeEditor; ed.setContent(p.html); ed.undoManager.add(); ed.setDirty(true); ed.fire('change'); await sl(500);
 const clen=ed.getContent().length;
 document.querySelector('#category-btn').click(); await sl(300);
